@@ -26,6 +26,20 @@ module Enumerable
         end
     end
 
+
+    def my_select
+        return to_enum(:my_select) unless block_given?
+        if is_a? Array
+            empty_array = []
+            my_each { |n| empty_array << n if yield(n) }
+            empty_array
+        elsif is_a? Hash
+            empty_hash = {}
+            my_each { |k, v| empty_hash[k] = v if yield(k, v)}
+            empty_hash
+        end
+    end
+
 end
 
 array_example = [1, 2, 3, "apple", "banana", "orange"]
@@ -62,3 +76,15 @@ puts "\nmy_each_with_index method"
 array_example.my_each_with_index do |n, i|
     puts "at index #{i} is #{n}"
 end
+
+puts "\nRuby standard selec method"
+
+puts array_example.select { |n| n.is_a? Numeric}
+
+puts hash_example.select { |k, v| k > 1}
+
+puts "\nmy_select method"
+
+puts array_example.my_select { |n| n.is_a? Numeric}
+
+puts hash_example.my_select { |k, v| k > 1}
