@@ -75,6 +75,29 @@ module Enumerable
             true
         end
     end
+
+    # def my_count(p = nil)
+    #     i=0
+    #     if block_given?
+    #     my_each {|n| i =+ 1 if yield(n)}
+    #     elsif p
+    #     my_each {|n| i =+ 1 if n == p}
+    #     else
+    #     self.length
+    #     end
+    # end
+
+    def my_count(p = nil)
+        i = 0
+        if p
+          my_each { |n| i += 1 if n == p }
+        elsif !block_given?
+          i = size
+        elsif !p
+          my_each { |n| i += 1 if yield(n) }
+        end
+        i
+      end
 end
 
 array_example = [1, 2, 3, "apple", "banana", "orange"]
@@ -147,3 +170,15 @@ puts array_example.none? {|n| n.is_a? Numeric}
 puts "\nmy_none? method"
 
 puts array_example.my_none? {|n| n.is_a? Numeric}
+
+puts "\nRuby standard count method"
+
+puts array_example.count
+puts array_example.count("apple")
+puts array_example.count {|n| n.is_a? Numeric}
+
+puts "\nmy_count? method"
+
+puts array_example.my_count
+puts array_example.my_count("apple")
+puts array_example.my_count {|n| n.is_a? Numeric}
