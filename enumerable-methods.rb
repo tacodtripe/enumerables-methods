@@ -40,6 +40,18 @@ module Enumerable
         end
     end
 
+    def my_all?
+        return_values = []
+        my_each do|n|
+            return_values << yield(n)
+        end
+        if return_values.include?(false)
+            false
+        elsif
+            true
+        end
+    end
+
 end
 
 array_example = [1, 2, 3, "apple", "banana", "orange"]
@@ -88,3 +100,11 @@ puts "\nmy_select method"
 puts array_example.my_select { |n| n.is_a? Numeric}
 
 puts hash_example.my_select { |k, v| k > 1}
+
+puts "\nRuby standard all? method"
+
+puts array_example.all? {is_a? Numeric}
+
+puts "\nmy_all? method"
+
+puts array_example.my_all? {is_a? Numeric}
