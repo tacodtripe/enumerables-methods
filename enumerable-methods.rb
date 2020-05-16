@@ -63,6 +63,18 @@ module Enumerable
             false
         end
     end
+
+    def my_none?
+        return_values = []
+        my_each do|n|
+            return_values << yield(n)
+        end
+        if return_values.include?(true)
+            false
+        elsif
+            true
+        end
+    end
 end
 
 array_example = [1, 2, 3, "apple", "banana", "orange"]
@@ -127,3 +139,11 @@ puts array_example.any? {|n| n.is_a? Numeric}
 puts "\nmy_any? method"
 
 puts array_example.my_any? {|n| n.is_a? Numeric}
+
+puts "\nRuby standard none? method"
+
+puts array_example.none? {|n| n.is_a? Numeric}
+
+puts "\nmy_none? method"
+
+puts array_example.my_none? {|n| n.is_a? Numeric}
