@@ -76,17 +76,6 @@ module Enumerable
         end
     end
 
-    # def my_count(p = nil)
-    #     i=0
-    #     if block_given?
-    #     my_each {|n| i =+ 1 if yield(n)}
-    #     elsif p
-    #     my_each {|n| i =+ 1 if n == p}
-    #     else
-    #     self.length
-    #     end
-    # end
-
     def my_count(p = nil)
         i = 0
         if p
@@ -97,7 +86,16 @@ module Enumerable
           my_each { |n| i += 1 if yield(n) }
         end
         i
-      end
+    end
+
+    def my_map
+        return to_enum(:my_map) unless block_given?
+        result = []
+        my_each do |n|
+            result << yield(n)
+        end
+        result
+    end
 end
 
 array_example = [1, 2, 3, "apple", "banana", "orange"]
@@ -182,3 +180,11 @@ puts "\nmy_count? method"
 puts array_example.my_count
 puts array_example.my_count("apple")
 puts array_example.my_count {|n| n.is_a? Numeric}
+
+puts "\nRuby standard map method"
+
+puts array_example.map {|n| n*2}
+
+puts "\nmy_map method"
+
+puts array_example.my_map {|n| n*2}
