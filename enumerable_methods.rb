@@ -1,4 +1,6 @@
-module Enumerable
+class Enumerable
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def my_each
     return to_enum(:my_each) unless block_given?
 
@@ -59,7 +61,7 @@ module Enumerable
       elsif param.nil?
         result = false unless value
       else
-        result = false unless param === value
+        result = false unless param == value
       end
     end
     result
@@ -134,16 +136,10 @@ module Enumerable
     array.my_each { |i| argument = argument ? yield(argument, i) : i }
     argument
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 end
 
 def multiply_els(array)
   array.my_inject { |memo, n| memo * n }
 end
-
-array = [1, 2, 3, 4, 5]
-range = 0..5
-hash = { a: 1, b: 2, c: 3 }
-
-p array.all? { |n| n > 3 }
-puts ''
-p array.my_all? { |n| n > 3 }
