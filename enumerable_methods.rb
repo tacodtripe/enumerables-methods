@@ -1,4 +1,5 @@
-class Enumerable
+# rubocop:disable Metrics/ModuleLength
+module Enumerable
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
   def my_each
@@ -50,6 +51,10 @@ class Enumerable
       empty_hash = {}
       my_each { |k, v| empty_hash[k] = v if yield(k, v) }
       empty_hash
+    elsif is_a? Range
+      empty_array = []
+      my_each { |n| empty_array << n if yield(n) }
+      empty_array
     end
   end
 
@@ -61,7 +66,7 @@ class Enumerable
       elsif param.nil?
         result = false unless value
       else
-        result = false unless param == value
+        result = false unless param === value # rubocop:disable Style/CaseEquality
       end
     end
     result
@@ -139,7 +144,7 @@ class Enumerable
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/PerceivedComplexity
 end
-
+# rubocop:enable Metrics/ModuleLength
 def multiply_els(array)
   array.my_inject { |memo, n| memo * n }
 end
