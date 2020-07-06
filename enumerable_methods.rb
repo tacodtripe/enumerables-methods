@@ -149,8 +149,7 @@ def multiply_els(array)
   array.my_inject { |memo, n| memo * n }
 end
 
-
 array = [1, 2, 3, 12, 13]
-my_proc = proc {|num| num > 10 }
+my_proc = proc { |num| num > 10 }
 
 p array.my_map(&my_proc) == array.map(&my_proc)
