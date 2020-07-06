@@ -5,39 +5,25 @@ module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
 
+    converted_array = to_a
     i = 0
-    while i < size
-      if is_a? Hash
-        yield(keys[i], self[keys[i]])
-        return self if i == size - 1
-      elsif is_a? Array
-        yield self[i]
-        return self if i == size - 1
-      elsif is_a? Range
-        yield to_a[i]
-        return self if i == size - 1
-      end
+    while i < converted_array.size
+      yield(converted_array[i])
       i += 1
     end
+    self
   end
 
   def my_each_with_index
     return to_enum(:my_each_with_index) unless block_given?
 
+    converted_array = to_a
     i = 0
-    while i < size
-      if is_a? Hash
-        yield(keys[i], self[keys[i]])
-        return self if i == size - 1
-      elsif is_a? Array
-        yield(self[i], i)
-        return self if i == size - 1
-      elsif is_a? Range
-        yield to_a[i], i
-        return self if i == size - 1
-      end
+    while i < converted_array.size
+      yield(converted_array[i], i)
       i += 1
     end
+    self
   end
 
   def my_select
@@ -116,16 +102,17 @@ module Enumerable
     total
   end
 
-  def my_map(&proc_0)
-    return to_enum(:my_map) unless block_given?
-
-    map = []
-    if !proc_0.nil?
-      my_each { |val| map.push(proc_0.call(val)) }
-    elsif block_given?
-      my_each { |val| map.push(yield(val)) }
+  def my_map(proc = nil)
+    result = []
+    if block_given?
+      my_each { |item| result.push(yield(item)) } unless proc
+      my_each { |item| result << proc.call(item) } if proc
+    elsif proc
+      my_each { |item| result << proc.call(item) }
+    else
+      return to_enum
     end
-    map
+    result
   end
 
   def my_inject(*args)
@@ -149,7 +136,5 @@ def multiply_els(array)
   array.my_inject { |memo, n| memo * n }
 end
 
-array = [1, 2, 3, 12, 13]
 my_proc = proc { |num| num > 10 }
-
-p array.my_map(&my_proc) == array.map(&my_proc)
+p [11, 2, 3, 15].my_map(my_proc) { |num| num < 10 } # should return [true, false, false, true]
