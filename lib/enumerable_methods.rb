@@ -135,6 +135,3 @@ end
 def multiply_els(array)
   array.my_inject { |memo, n| memo * n }
 end
-
-my_proc = proc { |num| num > 10 }
-p [11, 2, 3, 15].my_map(my_proc) { |num| num < 10 } # should return [true, false, false, true]
