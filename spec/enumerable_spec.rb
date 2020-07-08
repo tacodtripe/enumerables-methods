@@ -28,6 +28,10 @@ describe Enumerable do
     it 'return and array with all the elements that returned true to the block given' do
       expect([1, 2, 3].my_select { |n| n > 1 }).to eq([2, 3])
     end
+
+    it 'if no block is given return an enumerator' do
+      expect([1, 2, 3].my_select.class).to eq(Enumerator)
+    end
   end
 
   describe '#my_all?' do
@@ -37,6 +41,14 @@ describe Enumerable do
 
     it 'return false if any element return false to the block given' do
       expect([1, 2, 3].my_all? { |n| n > 1 }).to eq(false)
+    end
+
+    it 'if no block is given return true when none of the elements are false' do
+      expect([1, 2, 3].my_all?).to eq(true)
+    end
+
+    it 'if no block is given return false when one of the elements are false' do
+      expect([1, 2, false].my_all?).to eq(false)
     end
   end
 
@@ -48,6 +60,10 @@ describe Enumerable do
     it 'return false if no element return true to the block given' do
       expect([1, 2, 3].my_any? { |n| n > 4 }).to eq(false)
     end
+
+    it 'if no block is given return true if at least one of the elements is true' do
+      expect([1, 2, 3].my_any?).to eq(true)
+    end
   end
 
   describe '#my_none?' do
@@ -57,6 +73,10 @@ describe Enumerable do
 
     it 'return false if any element return true to the block given' do
       expect([1, 2, 3, 5].my_none? { |n| n > 4 }).to eq(false)
+    end
+
+    it 'if no block is given return true only if al elements are not true' do
+      expect([nil, false].my_none?).to eq(true)
     end
   end
 
@@ -77,6 +97,10 @@ describe Enumerable do
   describe '#my_map' do
     it 'return a new array with the results of running block once for every element in enum' do
       expect([1, 2, 3].my_map { |n| n * 2 }).to eq([2, 4, 6])
+    end
+
+    it 'return an enumerator if no block is given' do
+      expect([1, 2, 3].my_map.class).to eq(Enumerator)
     end
   end
 
